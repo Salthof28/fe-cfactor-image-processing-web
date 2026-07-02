@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --prefcalc: calc((16 / 1440) * 100vw);
+  --prefcalm: calc((16 / 768) * 100vw);
 }
 
 @theme inline {
