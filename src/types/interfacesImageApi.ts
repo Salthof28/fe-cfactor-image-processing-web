@@ -16,3 +16,8 @@ export interface NestJsErrorFeedback {
     error: string;
     statusCode: number;
 }
+
+export interface DownloadResponse {
+    blobData: Blob;
+    fileName: string;
+}
