@@ -13,6 +13,7 @@ export function DropFile() {
     const [statusProcess, setStatusProcess] = useState<StatusProcess>(StatusProcess.pending);
     const [imageStatus, setImageStatus] = useState<ResponseStatus>()
     const [file, setFile] = useState<File | null>(null);
+    const [nameFile, setNameFile] = useState<string | null>(null)
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -25,6 +26,8 @@ export function DropFile() {
         onDropAccepted: (file) => {
             setErrorMessage(null);
             const fileImg: File = file[0]
+            setNameFile(fileImg.name.split('.').slice(0, -1).join('.'))
+            console.log(fileImg.name.split('.').slice(0, -1).join('.'))
             setPreview(URL.createObjectURL(fileImg))
             setFile(fileImg)
         },
@@ -67,10 +70,10 @@ export function DropFile() {
         
     }
 
-    if((statusProcess !== StatusProcess.idle) && imageStatus) return <Processing imageStatus={imageStatus} setProcess={(status) => setStatusProcess(status)} />
+    if((statusProcess !== StatusProcess.idle) && imageStatus && nameFile) return <Processing imageStatus={imageStatus} setProcess={(status) => setStatusProcess(status)} nameOriginalFile={nameFile} />
 
     return (
-        <div className={`flex flex-col gap-[1em] items-center`}>
+        <section className={`flex flex-col gap-[1em] items-center`}>
             <div className={`relative mt-[1em] w-full h-[clamp(18em,calc(var(--prefcalc)*25),25em)] rounded-lg p-[1em] ${isDragActive ? "bg-white" : "bg-violet-600"}`}>
                 { errorMessage && (
                     <div className={`absolute text-center p-[0.2em] bg-amber-200 rounded-md left-[15em] right-[15em] top-[0.5em]`}>
@@ -88,6 +91,6 @@ export function DropFile() {
                 </div>
             </div>
             <Button onClick={handleUpload} disabled={uploadMutation.isPending} className={`active:scale-95 w-[6em] hover:bg-red-700 text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`} >Upload</Button>
-        </div>
+        </section>
     )
 }

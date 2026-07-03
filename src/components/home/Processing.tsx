@@ -9,9 +9,10 @@ import { useState } from "react"
 
 interface ProcessProp {
     imageStatus: ResponseStatus,
-    setProcess: (status: StatusProcess) => void
+    setProcess: (status: StatusProcess) => void,
+    nameOriginalFile: string
 }
-export function Processing({ imageStatus, setProcess }: ProcessProp) {
+export function Processing({ imageStatus, setProcess, nameOriginalFile }: ProcessProp) {
     const jobId: string = imageStatus.data.jobId;
     const [downloadError, setDownloadError] = useState<string | null>(null);
     const { data, error, refetch, isFetching } = useQuery<ResponseStatus>({
@@ -37,7 +38,7 @@ export function Processing({ imageStatus, setProcess }: ProcessProp) {
             const url = window.URL.createObjectURL(blobData);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `compressed-${jobId}.png`; 
+            link.download = `compressed-${nameOriginalFile}.webp`; 
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -78,7 +79,7 @@ export function Processing({ imageStatus, setProcess }: ProcessProp) {
             <p className={`text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)] text-justify`}>{`${data.data.message}`}</p>
             { data.data.status === StatusProcess.completed && (
                 <div className={`flex flex-col gap-[0.4em]`}>
-                    <Button onClick={() => downloadMutation.mutate()} disabled={downloadMutation.isPending} className={`text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`}>{ downloadMutation.isPending ? 'Downloading...' : 'Download' }</Button>
+                    <Button onClick={() => downloadMutation.mutate()} disabled={downloadMutation.isPending} className={`text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)] active:scale-95 hover:bg-red-700`}>{ downloadMutation.isPending ? 'Downloading...' : 'Download' }</Button>
                     <Button onClick={() => setProcess(StatusProcess.idle)} colourBg="bg-none" colourtext="text-blue-800" className={`underline text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`}>{`Back to upload image`}</Button>
                 </div>
             ) }
