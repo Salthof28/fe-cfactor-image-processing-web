@@ -12,7 +12,7 @@ export default function Home() {
           <h4 className={`text-[clamp(1.2em,calc(var(--prefcalc)*2),2em)] ${bricolageGrotest.className}`}>Compress Image</h4>
           <p className={`text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`}>Reduce the size of image</p>
           <DropFile/>
-          <section className={`bg-white/50 rounded-lg`}>
+          <section className={`bg-white/50 rounded-lg mt-[2em]`}>
             <h2 className="text-center text-[clamp(0.8em,calc(var(--prefcalc)*1.5),1.5em)] font-bold text-slate-900">How It Works</h2>
             <p className="mx-auto mt-3 max-w-2xl text-center text-slate-600 text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]"> Upload an image, let the server process it in the background, then download the optimized result.</p>
             <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
