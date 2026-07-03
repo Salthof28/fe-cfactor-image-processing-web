@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CFactor Image Processing Frontend
 
-## Getting Started
+Frontend application built with **Next.js** for uploading images, monitoring processing status, and downloading processed images from the backend image processing service.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+* Upload images using drag-and-drop or file picker
+* Display upload progress and processing status
+* Poll job status until processing is complete
+* Download processed images
+* Responsive user interface
+* Built with TypeScript
+
+---
+
+## Tech Stack
+
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+* TanStack Query
+* React Dropzone
+
+---
+
+## Project Structure
+
+```text
+src/
+├── app/                 # App Router pages and layouts
+├── components/          # Reusable UI components
+├── hooks/               # Custom React hooks
+├── lib/                 # Shared utilities and application configuration
+├── services/            # API communication with the backend
+├── types/               # Shared TypeScript types
+└── providers/           # React context providers (e.g., TanStack Query Provider)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Before running the application, make sure the following software is installed:
 
-## Learn More
+* Node.js 22 or later
+* pnpm
+* Backend Image Processing API is running
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Clone the repository:
 
-## Deploy on Vercel
+```bash
+git clone https://github.com/Salthof28/fe-cfactor-image-processing-web.git
+cd fe-cfactor-image-processing-web
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Install dependencies:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm install
+```
+
+---
+
+## Environment Variables
+
+Create a `.env.local` file in the project root.
+
+```env
+API_BE=http://localhost:4000
+```
+
+| Variable              | Description                                   |
+| --------------------- | --------------------------------------------- |
+| `API_BE`              | Base URL of the backend Image Processing API. |
+
+> **Note:** Ensure the backend application is running before starting the frontend.
+
+---
+
+## Running the Application
+
+Start the development server:
+
+```bash
+pnpm run dev
+```
+
+The application will be available at:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## Usage
+
+### 1. Upload an Image
+
+* Drag and drop an image into the upload area, or
+* Click the upload area to select an image from your device.
+
+After a successful upload, the backend returns a `jobId` used to track the processing status.
+
+---
+
+### 2. Monitor Processing Status
+
+The application automatically polls the backend using the returned `jobId`.
+
+Possible statuses:
+
+* `pending` — Image is waiting to be processed.
+* `processing` — Image is currently being processed.
+* `completed` — Image processing finished successfully.
+* `failed` — Image processing failed.
+
+Polling automatically stops when the job reaches either the `completed` or `failed` state.
+
+---
+
+### 3. Download the Processed Image
+
+When the job status becomes `completed`, a download button will be displayed.
+
+Clicking the button downloads the processed WebP image from the backend.
+
+---
+
+## Backend Dependency
+
+This frontend depends on the backend Image Processing API.
+
+Ensure the backend server and Redis are running before using the application.
+
+Default backend URL:
+
+```text
+http://localhost:4000
+```
+
+---
+
+## License
+
+This project was created for technical assessment purposes.
+
+---
+
+## Author
+🔧 Salman Althof
