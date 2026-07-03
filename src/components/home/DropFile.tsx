@@ -2,13 +2,19 @@
 import { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Button } from '../ui/Button';
-import { ResponseStatus } from '@/types/interfacesImageApi';
+import { NestJsErrorFeedback, ResponseStatus } from '@/types/interfacesImageApi';
 import { fetchUploadImage } from '@/services/imageApi';
+import { StatusProcess } from '@/types/enumStatus';
+import { Processing } from './Processing';
+import { useMutation } from '@tanstack/react-query';
 
 export function DropFile() {
     const [preview, setPreview] = useState<string | null>(null);
-    const [file, setFile] = useState<File | null>(null)
-    const [error, setError] = useState<boolean>(false)
+    const [statusProcess, setStatusProcess] = useState<StatusProcess>(StatusProcess.pending);
+    const [imageStatus, setImageStatus] = useState<ResponseStatus>()
+    const [file, setFile] = useState<File | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         multiple: false,
         accept: {
@@ -17,35 +23,58 @@ export function DropFile() {
             'image/webp': ['.webp'],
         },
         onDropAccepted: (file) => {
-            setError(false);
+            setErrorMessage(null);
             const fileImg: File = file[0]
             setPreview(URL.createObjectURL(fileImg))
             setFile(fileImg)
         },
           onDropRejected: () => {
-            setError(true);
+            setErrorMessage(`⚠️ Unsupported file type. Please upload a JPG, PNG, or WebP image.`);
             setTimeout(() => {
-                setError(false);
+                setErrorMessage(null);
             }, 2000);
         },
+    })
+
+    const uploadMutation = useMutation({
+
+        mutationFn: (formData: FormData) => fetchUploadImage(formData),
+        
+        onSuccess: (data: ResponseStatus) => {
+            setErrorMessage(null)
+            setPreview(null);
+            setImageStatus(data);
+            setStatusProcess(data.data.status);
+            setFile(null); 
+        },
+        
+        onError: (error: unknown) => {
+            const serverError = (error) as NestJsErrorFeedback;
+            const messageError = `⚠️ ${serverError.message}` || "⚠️ Something went wrong. Please try again.";
+            setErrorMessage(messageError)
+            setTimeout(() => {
+                setErrorMessage(null);
+            }, 2000);
+        }
     })
 
     const handleUpload = async () => {
         if(file) {
             const imageUpload = new FormData();
             imageUpload.append('file', file);
-            const data: ResponseStatus = await fetchUploadImage(imageUpload);
-            console.log(data)
+            uploadMutation.mutate(imageUpload)
         }
         
     }
 
+    if((statusProcess !== StatusProcess.idle) && imageStatus) return <Processing imageStatus={imageStatus} setProcess={(status) => setStatusProcess(status)} />
+
     return (
         <div className={`flex flex-col gap-[1em] items-center`}>
             <div className={`relative mt-[1em] w-full h-[25em] rounded-lg p-[1em] ${isDragActive ? "bg-white" : "bg-violet-600"}`}>
-                { error && (
-                    <div className={`absolute p-[0.2em] bg-amber-200 rounded-md left-[25em] top-[0.5em]`}>
-                        <p className={`text-red-600`}>{`⚠️ Unsupported file type. Please upload a JPG, PNG, or WebP image.`}</p>
+                { errorMessage && (
+                    <div className={`absolute text-center p-[0.2em] bg-amber-200 rounded-md left-[15em] right-[15em] top-[0.5em]`}>
+                        <p className={`text-red-600`}>{`${errorMessage}`}</p>
                     </div>
                 ) }
                 <div {...getRootProps()} className={`flex justify-center items-center w-full h-full border-[0.2em] border-dashed rounded-lg cursor-pointer ${isDragActive ? "border-violet-600" : "border-white"} p-[1em]`}>
@@ -58,7 +87,7 @@ export function DropFile() {
                     ) }
                 </div>
             </div>
-            <Button className={`active:scale-95 w-[6em] hover:bg-red-700`} onClick={handleUpload}>Upload</Button>
+            <Button onClick={handleUpload} disabled={uploadMutation.isPending} className={`active:scale-95 w-[6em] hover:bg-red-700`} >Upload</Button>
         </div>
     )
 }
