@@ -7,7 +7,7 @@ export function Navbar() {
                 <div className="h-[clamp(2em,calc(var(--prefcalc)*4),4em)]">
                     <img src={`/logo.png`} className={`w-full h-full`} />
                 </div>
-                <p className={`text-black ${agbalumo.className} font-bold text-[clamp(1.2em,calc(var(--prefcalc)*2),2em)]`}>CIMB </p>
+                <p className={`text-black ${agbalumo.className} font-bold text-[clamp(1.2em,calc(var(--prefcalc)*2),2em)]`}>CIM </p>
             </div>
         </header>
     )
