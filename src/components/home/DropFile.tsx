@@ -71,23 +71,23 @@ export function DropFile() {
 
     return (
         <div className={`flex flex-col gap-[1em] items-center`}>
-            <div className={`relative mt-[1em] w-full h-[25em] rounded-lg p-[1em] ${isDragActive ? "bg-white" : "bg-violet-600"}`}>
+            <div className={`relative mt-[1em] w-full h-[clamp(18em,calc(var(--prefcalc)*25),25em)] rounded-lg p-[1em] ${isDragActive ? "bg-white" : "bg-violet-600"}`}>
                 { errorMessage && (
                     <div className={`absolute text-center p-[0.2em] bg-amber-200 rounded-md left-[15em] right-[15em] top-[0.5em]`}>
-                        <p className={`text-red-600`}>{`${errorMessage}`}</p>
+                        <p className={`text-red-600 text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`}>{`${errorMessage}`}</p>
                     </div>
                 ) }
-                <div {...getRootProps()} className={`flex justify-center items-center w-full h-full border-[0.2em] border-dashed rounded-lg cursor-pointer ${isDragActive ? "border-violet-600" : "border-white"} p-[1em]`}>
+                <div {...getRootProps()} className={`flex justify-center items-center w-full h-full border-[0.2em] border-dashed rounded-lg cursor-pointer ${isDragActive ? "border-violet-600" : "border-white"} p-[1em] text-justify`}>
                     <input {...getInputProps()} />
-                    { !preview ? (<p className={`${isDragActive ? "text-violet-600" : "text-white"}`}>drag and drop file here or click in here for select file</p>) : (
+                    { !preview ? (<p className={`text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)] ${isDragActive ? "text-violet-600" : "text-white"}`}>drag and drop file here or click in here for select file</p>) : (
                         <div className={` flex-col items-center justify-center h-full gap-[0.5em] ${isDragActive ? "hidden" : "flex"}`}>
-                            <img src={preview} className={`max-h-[18em]`} />
-                            <p className={`text-white`}>{file?.name}</p>
+                            <img src={preview} className={`max-h-[clamp(12em,calc(var(--prefcalc)*18),18em)]`} />
+                            <p className={`text-white text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`}>{file?.name}</p>
                         </div>
                     ) }
                 </div>
             </div>
-            <Button onClick={handleUpload} disabled={uploadMutation.isPending} className={`active:scale-95 w-[6em] hover:bg-red-700`} >Upload</Button>
+            <Button onClick={handleUpload} disabled={uploadMutation.isPending} className={`active:scale-95 w-[6em] hover:bg-red-700 text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`} >Upload</Button>
         </div>
     )
 }

@@ -65,7 +65,7 @@ export function Processing({ imageStatus, setProcess }: ProcessProp) {
                     <p>{downloadError}</p>
                 </div>
             ) }
-            <h5 className={`text-[1.5em] flex flex-row gap-[0.2em]`}>
+            <h5 className={`text-[clamp(1em,calc(var(--prefcalc)*1.5),1.5em)] flex flex-row gap-[0.2em]`}>
                 {`${data.data.status.toUpperCase()}`}
                 {data.data.status !== StatusProcess.completed && data.data.status !== StatusProcess.failed && (
                     <>
@@ -75,11 +75,11 @@ export function Processing({ imageStatus, setProcess }: ProcessProp) {
                     </>
                 )}
             </h5>
-            <p className={`text-[1em]`}>{`${data.data.message}`}</p>
+            <p className={`text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)] text-justify`}>{`${data.data.message}`}</p>
             { data.data.status === StatusProcess.completed && (
                 <div className={`flex flex-col gap-[0.4em]`}>
-                    <Button onClick={() => downloadMutation.mutate()} disabled={downloadMutation.isPending}>{ downloadMutation.isPending ? 'Downloading...' : 'Download' }</Button>
-                    <Button onClick={() => setProcess(StatusProcess.idle)} colourBg="bg-none" colourtext="text-blue-800" className={`underline`}>{`Back to upload image`}</Button>
+                    <Button onClick={() => downloadMutation.mutate()} disabled={downloadMutation.isPending} className={`text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`}>{ downloadMutation.isPending ? 'Downloading...' : 'Download' }</Button>
+                    <Button onClick={() => setProcess(StatusProcess.idle)} colourBg="bg-none" colourtext="text-blue-800" className={`underline text-[clamp(0.8em,calc(var(--prefcalc)*1),1em)]`}>{`Back to upload image`}</Button>
                 </div>
             ) }
         </div>
