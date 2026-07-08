@@ -1,24 +1,20 @@
-# Dependencies (Sangat berat, wajib diabaikan)
+
 node_modules
 .pnpm-store
 
-# Hasil build lokal (Bikin bentrok di dalam Docker)
 .next
 out
 
-# Environment variables rahasia (Disuntikkan via docker-compose saja)
 .env
 .env.local
 .env.production
 .env.development
 
-# Log files / Sampah sistem
 *.log
 npm-debug.log*
 pnpm-debug.log*
 .DS_Store
 Thumbs.db
-
-# Folder Git
+cd 
 .git
 .gitignore
