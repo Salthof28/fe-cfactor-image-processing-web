@@ -56,7 +56,7 @@ function getFileName(headers: Headers, jobId: string): string {
     const contentDisposition = headers.get("content-disposition");
 
     if (!contentDisposition) return `compressed-${jobId}.webp`;
+    const matches = contentDisposition.split("filename=")[1].replaceAll('"', '');
     
-    const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
-    return matches?.[1] ? matches[1].replace(/['"]/g, "") : `compressed-${jobId}.webp`;
+    return matches ?? `compressed-${jobId}.webp`;
 }

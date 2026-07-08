@@ -32,15 +32,15 @@ export function Processing({ imageStatus, setProcess }: ProcessProp) {
     const downloadMutation = useMutation({
         mutationFn: () => downloadImage(jobId),
         onSuccess: (image: DownloadResponse) => {
-        setDownloadError(null);
-        const url = window.URL.createObjectURL(image.blobData);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = image.fileName; 
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
+            setDownloadError(null);
+            const url = window.URL.createObjectURL(image.blobData);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = image.fileName; 
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
         },
         onError: (error: unknown) => {
             const serverError = (error) as NestJsErrorFeedback;
